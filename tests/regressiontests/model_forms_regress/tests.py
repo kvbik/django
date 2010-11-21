@@ -10,6 +10,16 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from models import Person, RealPerson, Triple, FilePathModel, Article, \
     Publication, CustomFF, Author, Author1, Homepage, Document, Edition
 
+from models import MyModelForm, MyModelFormMetaclass
+
+
+class TestModelFormFactory(TestCase):
+    def test_modelform_factory_use_specific_model_form_metaclass(self):
+        a = modelform_factory(Person, form=MyModelForm)
+        x = a()
+        self.failUnlessEqual(2, MyModelFormMetaclass.run)
+        self.failUnlessEqual(MyModelFormMetaclass, type(type(x)))
+
 
 class ModelMultipleChoiceFieldTests(TestCase):
     def test_model_multiple_choice_number_of_queries(self):

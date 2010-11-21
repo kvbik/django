@@ -2,6 +2,18 @@ import os
 from django.db import models
 from django.core.exceptions import ValidationError
 
+from django.forms.models import ModelForm, ModelFormMetaclass
+
+
+class MyModelFormMetaclass(ModelFormMetaclass):
+    run = 0
+    def __new__(*args, **kwargs):
+        MyModelFormMetaclass.run += 1
+        return ModelFormMetaclass.__new__(*args, **kwargs)
+
+class MyModelForm(ModelForm):
+    __metaclass__ = MyModelFormMetaclass
+
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
